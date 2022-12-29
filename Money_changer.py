@@ -8,9 +8,13 @@ if option == "1":
         amount_CAD = amountUSD_CAD[:-4]
         amount_USD = float(amount_CAD) * 0.74
         print("You'r amount of CAD in USD is :" + str(amount_USD)) 
+    elif last_tree == "USD":
+        USD_amount = amountUSD_CAD [:-4]
+        CAD_amount = float(USD_amount) * 1.36
+        print("You'r amount of USD in CAD is :" + str(CAD_amount)) 
     else:
         print("Are you sure you did it this way : 100 CAD")
 elif option == "2":
     print("NICE ONE!")
 else: 
-    print('YOU ARE A PIECE OF SHIT, THIS IS NOT A OPTION!')
+    print('The only option are 1 or 2.')

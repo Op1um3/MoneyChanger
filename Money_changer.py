@@ -18,4 +18,4 @@ elif option == "2":
     print("NICE ONE!")
 else: 
     print('The only option are 1 or 2.')
-    print("aaa")
+

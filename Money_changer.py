@@ -1,3 +1,4 @@
+#So it's alwayse repeat when error
 while True :
 
     #print('Enter the option you would like to do: \n 1.USD-CAD ')
@@ -43,5 +44,4 @@ while True :
         print('The only option are 1 or 2.') 
         continue
     break
-    """TODO : add a round (arroundi) so we don't have really long numbers, 
-    DO a while loop so the user can retry the program withou redoing command and do new currencies, could also connect to data base for real time prices."""
+    """TODO : do new currencies, could also connect to data base for real time prices.Do the round for 0.5"""

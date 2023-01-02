@@ -1,4 +1,4 @@
-#TODO : Do better comments for the combobox section, put everything in black and add a good interface and round widget. Being able to import cryptocurencies to exchange.
+#TODO : Do better comments for the combobox section, put everything in black and add a good interface and round widget. Being able to import other curencies and cryptocurencies to exchange.
 import tkinter as tk
 import tkinter.ttk as ttk
 import requests
@@ -28,7 +28,7 @@ root.title("Currency Converter")
 from_combo = tk.ttk.Combobox(root)
 from_combo["values"] = ("USD", "EUR", "CAD", "GBP")
 from_combo.current(0)
-
+# complete explication at end of script
 to_combo = ttk.Combobox(root)
 to_combo["values"] = ("USD", "EUR", "CAD", "GBP")
 to_combo.current(1)
@@ -53,4 +53,11 @@ When the user clicks the "Convertir" button, the convert function is called.
 This function gets the amount to convert from the Entry widget, and the selected currencies from the two Combobox widgets.
 It then sends a request to the "Exchange Rate API" (using the requests library) to get the exchange rate between the two currencies.
 The function then calculates the result of the conversion and updates the text of the Label widget with the result.
-Finally, the mainloop function is called, which waits for events (such as button clicks) and processes them until the user closes the window."""
+Finally, the mainloop function is called, which waits for events (such as button clicks) and processes them until the user closes the window.
+
+ Other specification : from_currency and to_currency are variables that store the selected currency codes from the from_combo and to_combo comboboxes, respectively. 
+ The get method is a method of the Combobox widget that returns the currently selected value in the combobox.
+In this script, the from_combo and to_combo comboboxes allow the user to select the currency they want to convert from and the currency they want to convert to, respectively. 
+The selected currency codes are stored in the from_currency and to_currency variables, and are used in the API request to get the conversion rate.
+For example, if the user selects "USD" in the from_combo combobox and "EUR" in the to_combo combobox, 
+the from_currency variable will be set to "USD" and the to_currency variable will be set to "EUR"."""

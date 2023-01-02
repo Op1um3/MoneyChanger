@@ -48,7 +48,7 @@ result_label.pack()
 root.mainloop()  
 """A complete overview of the code : This code is written in Python and uses the tkinter library to create a simple graphical user interface (GUI) for a currency converter.
 The GUI has two dropdown menus (using the ttk.Combobox widget) to select the currency to convert from and the currency to convert to, and an Entry widget to enter the amount to convert.
-There is also a Button widget with the text "Convertir" (French for "convert") and a Label widget to display the result of the conversion.
+There is also a Button widget with the text "Convert" and a Label widget to display the result of the conversion.
 When the user clicks the "Convertir" button, the convert function is called.
 This function gets the amount to convert from the Entry widget, and the selected currencies from the two Combobox widgets.
 It then sends a request to the "Exchange Rate API" (using the requests library) to get the exchange rate between the two currencies.

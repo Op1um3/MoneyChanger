@@ -13,7 +13,6 @@ def convert():
     # get the starting and destination currencies
     from_currency = from_combo.get()
     to_currency = to_combo.get()
-    wrong_amount.destroy()
     # check if the currency codes are valid
     if from_currency in ["USD", "EUR", "CAD", "GBP"] and to_currency in ["USD", "EUR", "CAD", "GBP"]:
       # send a request to the currency conversion API to get the conversion rate
@@ -25,12 +24,16 @@ def convert():
       result = round(float(amount) * rate)
       result_label.config(text=f"{amount} {from_currency} = {result} {to_currency}")
       print("Your amount is " + str(result))
+    # if the user enter a wrong curren it will display a text
     else:
-      valid_currency = print("Please enter a valid currency code")
+      wrong_currency = tk.Label(root,text="Please enter a valid currency")
+      wrong_currency.pack()
+      root.after(1500, wrong_currency.destroy)
+  # if the user enter a wrong amount it will display a text
   else:
     wrong_amount = tk.Label(root, text='Please enter a valid amount')
     wrong_amount.pack()
- 
+    root.after(1500, wrong_amount.destroy)
 # create the main window
 root = tk.Tk()
 root.title("Currency Converter")
@@ -46,11 +49,10 @@ from_combo.current(0)
 to_combo = ttk.Combobox(root)
 to_combo["values"] = ("USD", "EUR", "CAD", "GBP")
 to_combo.current(1)
-
+# the conversion button
 entry = tk.Entry(root)
 convert_button = tk.Button(root, text="Convert", command=convert)
-result_label = tk.Label(root)
-
+result_label = tk.Label(root, bg="#2A2728", fg="white")
 # add the widgets to the window
 from_combo.pack()
 to_combo.pack()

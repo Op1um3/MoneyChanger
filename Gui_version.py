@@ -1,4 +1,5 @@
-"""TODO : Do better comments for the combobox section, put everything in black and add a good interface and round widget. Being able to import other curencies and cryptocurencies to exchange.
+"""TODO : Do better comments for the combobox section, put everything in black and add a good interface and round widget
+. Being able to import other curencies and cryptocurencies to exchange.
 use fixer for api and not exchangerate."""
 import tkinter as tk
 import tkinter.ttk as ttk
@@ -7,23 +8,29 @@ import requests
 def convert():
   # get the amount to convert
   amount = entry.get()
+  # check if the amount is a number
+  if amount.isdigit():
+    # get the starting and destination currencies
+    from_currency = from_combo.get()
+    to_currency = to_combo.get()
+    wrong_amount.destroy()
+    # check if the currency codes are valid
+    if from_currency in ["USD", "EUR", "CAD", "GBP"] and to_currency in ["USD", "EUR", "CAD", "GBP"]:
+      # send a request to the currency conversion API to get the conversion rate
+      response = requests.get(f"https://api.exchangerate-api.com/v4/latest/{from_currency}")
+      data = response.json()
+      rate = data["rates"][to_currency]
 
-  # get the starting and destination currencies
-  from_currency = from_combo.get()
-  to_currency = to_combo.get()
-
-  # send a request to the currency conversion API to get the conversion rate
-  response = requests.get(f"https://api.exchangerate-api.com/v4/latest/{from_currency}")
-  data = response.json()
-  rate = data["rates"][to_currency]
-
-  # convert the amount and display the result
-  if result = True:
-  result = round(float(amount) * rate)
-  result_label.config(text=f"{amount} {from_currency} = {result} {to_currency}")
-  print ("Your amount is"+ "result")
-  else :
-  print ("only number accepted")
+      # convert the amount and display the result
+      result = round(float(amount) * rate)
+      result_label.config(text=f"{amount} {from_currency} = {result} {to_currency}")
+      print("Your amount is " + str(result))
+    else:
+      valid_currency = print("Please enter a valid currency code")
+  else:
+    wrong_amount = tk.Label(root, text='Please enter a valid amount')
+    wrong_amount.pack()
+ 
 # create the main window
 root = tk.Tk()
 root.title("Currency Converter")
@@ -67,4 +74,5 @@ Finally, the mainloop function is called, which waits for events (such as button
 In this script, the from_combo and to_combo comboboxes allow the user to select the currency they want to convert from and the currency they want to convert to, respectively. 
 The selected currency codes are stored in the from_currency and to_currency variables, and are used in the API request to get the conversion rate.
 For example, if the user selects "USD" in the from_combo combobox and "EUR" in the to_combo combobox, 
-the from_currency variable will be set to "USD" and the to_currency variable will be set to "EUR"."""
+the from_currency variable will be set to "USD" and the to_currency variable will be set to "EUR".
+The isdigit() method is a built-in method in Python that returns True if a string contains only digits (0-9) and False if it contains any other characters."""

@@ -1,9 +1,11 @@
 """TODO : Do better comments for the combobox section, put everything in black and add a good interface and round widget
 . Being able to import other curencies and cryptocurencies to exchange.
-use fixer for api and not exchangerate."""
+use fixer for api and not exchangerate.
+FINISH THE THEME"""
 import tkinter as tk
 import tkinter.ttk as ttk
 import requests
+import customtkinter
 
 def convert():
   # get the amount to convert
@@ -26,17 +28,20 @@ def convert():
       print("Your amount is " + str(result))
     # if the user enter a wrong curren it will display a text
     else:
-      wrong_currency = tk.Label(root,text="Please enter a valid currency")
+      wrong_currency = tk.Label(root,text="Please enter a valid currency",bg="#2A2728",fg="white")
       wrong_currency.pack()
-      root.after(1500, wrong_currency.destroy)
+      root.after(1250, wrong_currency.destroy)
   # if the user enter a wrong amount it will display a text
   else:
-    wrong_amount = tk.Label(root, text='Please enter a valid amount')
+    wrong_amount = tk.Label(root, text='Please enter a valid amount',bg="#2A2728",fg="white")
     wrong_amount.pack()
-    root.after(1500, wrong_amount.destroy)
+    root.after(1250, wrong_amount.destroy)
+    root.tk.Label.forget()
 # create the main window
 root = tk.Tk()
 root.title("Currency Converter")
+customtkinter.set_appearance_mode("dark")
+customtkinter.set_default_color_theme("dark-blue")
 # main window size
 root.geometry("250x250")
 # main window backroud
@@ -62,7 +67,7 @@ result_label.pack()
 
 # run the Tkinter main loop
 root.mainloop()  
-"""A complete overview of the code : This code is written in Python and uses the tkinter library to create a simple graphical user interface (GUI) for a currency converter.
+"""A complete overview of the code : This code is written in Python and uses the tkinter library to create a simple graphical user interface (GUI) for a currency converter.Also have
 The GUI has two dropdown menus (using the ttk.Combobox widget) to select the currency to convert from and the currency to convert to, and an Entry widget to enter the amount to convert.
 There is also a Button widget with the text "Convert" and a Label widget to display the result of the conversion.
 When the user clicks the "Convertir" button, the convert function is called.

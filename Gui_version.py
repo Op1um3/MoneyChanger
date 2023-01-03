@@ -2,10 +2,9 @@
 . Being able to import other curencies and cryptocurencies to exchange.
 use fixer for api and not exchangerate.
 FINISH THE THEME"""
-import tkinter as tk
-import tkinter.ttk as ttk
-import requests
+import tkinter
 import customtkinter
+import requests
 
 def convert():
   # get the amount to convert
@@ -24,46 +23,45 @@ def convert():
 
       # convert the amount and display the result
       result = round(float(amount) * rate)
-      result_label.config(text=f"{amount} {from_currency} = {result} {to_currency}")
+      result_label.configure(text=f"{amount} {from_currency} = {result} {to_currency}")
       print("Your amount is " + str(result))
     # if the user enter a wrong curren it will display a text
     else:
-      wrong_currency = tk.Label(root,text="Please enter a valid currency",bg="#2A2728",fg="white")
+      wrong_currency = customtkinter.CTkLabel(master=root, text="Please enter a valid currency",bg_color="#2A2728",fg_color="white", width=120, height=25
+    , corner_radius=8)
       wrong_currency.pack()
       root.after(1250, wrong_currency.destroy)
   # if the user enter a wrong amount it will display a text
   else:
-    wrong_amount = tk.Label(root, text='Please enter a valid amount',bg="#2A2728",fg="white")
+    wrong_amount = customtkinter.CTkLabel(master=root, text='Please enter a valid amount',bg_color="#2A2728",fg_color="white", width=120, height=25
+    , corner_radius=8)
     wrong_amount.pack()
     root.after(1250, wrong_amount.destroy)
-    root.tk.Label.forget()
 # create the main window
-root = tk.Tk()
+root = customtkinter.CTk()
 root.title("Currency Converter")
+# The root theme
 customtkinter.set_appearance_mode("dark")
 customtkinter.set_default_color_theme("dark-blue")
 # main window size
-root.geometry("250x250")
+root.geometry("600x500")
 # main window backroud
-root.configure(bg="#2A2728")
 # create the widgets 
-from_combo = tk.ttk.Combobox(root)
-from_combo["values"] = ("USD", "EUR", "CAD", "GBP")
-from_combo.current(0)
+from_combo = customtkinter.CTkComboBox(master=root, values = ["USD", "EUR", "CAD", "GBP"])
+
 # complete explication at end of script
-to_combo = ttk.Combobox(root)
-to_combo["values"] = ("USD", "EUR", "CAD", "GBP")
-to_combo.current(1)
+to_combo = customtkinter.CTkComboBox(master=root, values = ["USD", "EUR", "CAD", "GBP"])
+
 # the conversion button
-entry = tk.Entry(root)
-convert_button = tk.Button(root, text="Convert", command=convert)
-result_label = tk.Label(root, bg="#2A2728", fg="white")
+entry = customtkinter.CTkEntry(master=root)
+convert_button = customtkinter.CTkButton(master=root, text="Convert", command=convert)
+result_label = customtkinter.CTkLabel(master=root, bg_color="#2A2728", fg_color="white",corner_radius=8)
 # add the widgets to the window
-from_combo.pack()
-to_combo.pack()
-entry.pack()
-convert_button.pack()
-result_label.pack()
+from_combo.pack(padx=20, pady=20)
+to_combo.pack(padx=18, pady=18)
+entry.pack(padx=15, pady=15)
+convert_button.pack(padx=10, pady=10)
+result_label.pack(padx=5, pady=5)
 
 # run the Tkinter main loop
 root.mainloop()  

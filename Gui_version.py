@@ -1,7 +1,6 @@
 """TODO : Do better comments for the combobox section,
-. Being able to import other curencies and cryptocurencies to exchange.
-use fixer for api and not exchangerate. Put a graphic
-FINIR LE PLACE HOLDER"""
+. Being able to import other curencies and cryptocurencies to exchange. Put a graphic api
+Do a placeholder that react"""
 import tkinter
 import customtkinter
 import requests
@@ -42,33 +41,31 @@ def convert():
       rate = data["conversion_rates"][to_currency]
       # convert the amount and display the result
       result = round(float(amount) * rate, 2)
-      result_label = customtkinter.CTkLabel(master=root, bg_color="#2A2728", 
-                                            fg_color="#1a1617", width=170, height=30, corner_radius=8)
-      result_label.pack(padx=5, pady=5)
+      result_label = customtkinter.CTkLabel(master=root,fg_color="#191919", width=140, height=30, corner_radius=7)
+      result_label.place(relx=0.03, rely=0.90, anchor='w')
       result_label.configure(text=f"{amount} {from_currency} = {result} {to_currency}")
     else:
       if not wrong_currency_displayed:
-        wrong_currency = customtkinter.CTkLabel(master=root, text="Please enter a valid currency",
+        wrong_currency = customtkinter.CTkLabel(master=root, text="Enter a valid currency",
                                                 bg_color="#2A2728",fg_color="#a30016", width=120, height=30 ,corner_radius=8)
-        wrong_currency.pack()
+        wrong_currency.place(relx=0.03, rely=0.90, anchor='w')
         wrong_currency_displayed = True
         try:
           root.after_cancel(wrong_currency_after_id)
         except NameError:
           pass
-        wrong_currency_after_id = root.after(5000, wrong_currency.destroy)
+        wrong_currency_after_id = root.after(3000, wrong_currency.destroy)
   else:
     if not wrong_amount_displayed:
-      wrong_amount = customtkinter.CTkLabel(master=root, text='Please enter a valid amount',
-                                            bg_color="#2A2728",fg_color="#a30016", width=140, height=30, 
-                                            corner_radius=8)
-      wrong_amount.pack()
+      wrong_amount = customtkinter.CTkLabel(master=root, text='Enter a valid amount',
+                                            bg_color="#2A2728",fg_color="#a30016", width=140, height=30, corner_radius=8)
+      wrong_amount.place(relx=0.03, rely=0.90, anchor='w')
       wrong_amount_displayed = True
       try:
         root.after_cancel(wrong_amount_after_id)
       except NameError:
         pass
-      wrong_amount_after_id = root.after(5000, wrong_amount.destroy)
+      wrong_amount_after_id = root.after(3000, wrong_amount.destroy)
 
 # create the main window
 root = customtkinter.CTk()
@@ -98,7 +95,7 @@ convert_button = customtkinter.CTkButton(master=root, text="Convert", command=co
                                          width=140, height=30, corner_radius=8)
 
 # add the widgets to the window
-rel_x = 0.02
+rel_x = 0.03
 from_combo.place(relx = rel_x, rely=0.10, anchor='w')
 to_combo.place(relx = rel_x, rely=0.30, anchor='w')
 entry.place(relx = rel_x, rely=0.50, anchor='w') 

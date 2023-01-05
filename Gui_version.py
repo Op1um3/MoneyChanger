@@ -1,19 +1,18 @@
 """TODO : Do better comments for the combobox section,
 . Being able to import other curencies and cryptocurencies to exchange. Put a graphic api
-Do a placeholder that react"""
+Do a placeholder that react, replace the icon of the window"""
 import tkinter
 import customtkinter
 import requests
+import json
+import time
 
 # global declaration for the wrong_amount_after_id and wrong_currency_after_id variables to make them accessible inside the convert function:
 wrong_amount_displayed = False
 wrong_currency_displayed = False
 
-# available currencies list:
-currencies = ["USD", "EUR", "CAD", "GBP","JPY"]
-
-wrong_amount_displayed = False
-wrong_currency_displayed = False
+# available currencies and cryptocurrency codes:
+currencies = ["USD", "EUR", "CAD", "GBP", "JPY", "BTC", "ETH", "XRP"]
 
 def convert():
   global wrong_amount_displayed
@@ -35,15 +34,29 @@ def convert():
     to_currency = to_combo.get()
     # check if the currency codes are valid
     if from_currency in currencies and to_currency in currencies:
-      # send a request to the currency conversion API to get the conversion rate
-      response = requests.get(f"https://v6.exchangerate-api.com/v6/40978df5c0d54eb0375143c7/latest/{from_currency}")
-      data = response.json()
-      rate = data["conversion_rates"][to_currency]
-      # convert the amount and display the result
-      result = round(float(amount) * rate, 2)
-      result_label = customtkinter.CTkLabel(master=root,fg_color="#191919", width=140, height=30, corner_radius=7)
-      result_label.place(relx=0.03, rely=0.90, anchor='w')
-      result_label.configure(text=f"{amount} {from_currency} = {result} {to_currency}")
+      # check if the conversion involves a cryptocurrency
+      if to_currency in ["BTC", "ETH", "XRP"]:
+        # send a request to the CoinMarketCap API to get the conversion rate
+        response = requests.get(f"https://pro-api.coinmarketcap.com/v1/tools/price-conversion", 
+                                params={"symbol": to_currency, "amount": amount, "convert": from_currency},
+                                headers={"X-CMC_PRO_API_KEY": "ce03145d-dee9-4e20-8af3-a345706ec8b2"})
+        data = response.json()
+        rate = data["data"]["quote"][from_currency]["price"]
+        # convert the amount and display the result
+        result = round(float(amount) * rate, 2)
+        result_label = customtkinter.CTkLabel(master=root,fg_color="#191919", width=140, height=30, corner_radius=7)
+        result_label.place(relx=0.03, rely=0.90, anchor='w')
+        result_label.configure(text=f"{amount} {from_currency} = {result} {to_currency}")
+      else:
+        # send a request to the currency conversion API to get the conversion rate
+        response = requests.get(f"https://v6.exchangerate-api.com/v6/40978df5c0d54eb0375143c7/latest/{from_currency}")
+        data = response.json()
+        rate = data["conversion_rates"][to_currency]
+        # convert the amount and display the result
+        result = round(float(amount) * rate, 2)
+        result_label = customtkinter.CTkLabel(master=root,fg_color="#191919", width=140, height=30, corner_radius=7)
+        result_label.place(relx=0.03, rely=0.90, anchor='w')
+        result_label.configure(text=f"{amount} {from_currency} = {result} {to_currency}")
     else:
       if not wrong_currency_displayed:
         wrong_currency = customtkinter.CTkLabel(master=root, text="Enter a valid currency",

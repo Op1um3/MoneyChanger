@@ -1,6 +1,6 @@
 """TODO : Do better comments for the combobox section,
 . Being able to import other curencies and cryptocurencies to exchange. Put a graphic api
-Do a placeholder that react, replace the icon of the window"""
+Do a placeholder that react, replace the icon of the window, add polygon"""
 import tkinter
 import customtkinter
 import requests

@@ -5,67 +5,78 @@ import tkinter
 import customtkinter
 import requests
 
-# global declaration for the wrong_amount_after_id and wrong_currency_after_id variables to make them accessible inside the convert function:
-wrong_amount_displayed = False
-wrong_currency_displayed = False
+CURRENCIES = ["USD", "EUR", "CAD", "GBP","JPY"] # available currencies list
 
-# available currencies list:
-currencies = ["USD", "EUR", "CAD", "GBP","JPY"]
+def is_number(s: str) -> bool:
+  """
+  Checks if a string is a number (for instance '69.01', '0.42' or '1').
 
-wrong_amount_displayed = False
-wrong_currency_displayed = False
+  Args:
+      s (str): the string to check
+  """
+  s_no_dot = s.replace(".", "", 1) # this is an integer iff s is a correct number
+  return s_no_dot.isdigit()
 
-def convert():
-  global wrong_amount_displayed
-  global wrong_currency_displayed
-  wrong_amount_displayed = False
-  wrong_currency_displayed = False
+def delete_labels(window: tkinter.Tk) -> None:
+  """
+  Remove all labels that are in a window.
   
-  # delete all labels
-  for widget in root.winfo_children():
+  Args:
+      window: a Tk instance associated with the window in wich the labels are.
+  """
+  for widget in window.winfo_children(): # delete all labels in the window
     if isinstance(widget, customtkinter.CTkLabel):
       widget.destroy()
-  
-  # get the amount to convert
+      
+def get_exchange_rate(from_currency: str, to_currency: str) -> float:
+  """
+  Gets the exchange rate between from_currency to to_currency from the https://www.exchangerate-api.com
+
+  Args:
+      from_currency (str): start currency
+      to_currency (str): target currency
+
+  Returns:
+      float: x where 1 from_currency = x to_currency
+  """
+  response = requests.get(f"https://v6.exchangerate-api.com/v6/40978df5c0d54eb0375143c7/latest/{from_currency}")
+  data = response.json()
+  return data["conversion_rates"][to_currency]
+def convert():
+  """
+  TODO: write docstring for this function
+  """
+  delete_labels(root)
   amount = entry.get()
-  # check if the amount is a number
-  if amount.isdigit():
-    # get the starting and destination currencies
-    from_currency = from_combo.get()
-    to_currency = to_combo.get()
-    # check if the currency codes are valid
-    if from_currency in currencies and to_currency in currencies:
-      # send a request to the currency conversion API to get the conversion rate
-      response = requests.get(f"https://v6.exchangerate-api.com/v6/40978df5c0d54eb0375143c7/latest/{from_currency}")
-      data = response.json()
-      rate = data["conversion_rates"][to_currency]
-      # convert the amount and display the result
-      result = round(float(amount) * rate, 2)
-      result_label = customtkinter.CTkLabel(master=root,fg_color="#191919", width=140, height=30, corner_radius=7)
+  if is_number(amount):
+    amount = float(amount)
+    from_currency, to_currency = from_combo.get(), to_combo.get()
+    if from_currency in CURRENCIES and to_currency in CURRENCIES:
+      rate = get_exchange_rate(from_currency, to_currency)
+      result = float(amount) * rate
+      
+      # Check if wrong_amount_displayed or wrong_currency_displayed exists and destroy it
+      for widget in root.winfo_children():
+        if widget.cget("text") == "Enter a valid currency" or widget.cget("text") == "Enter a valid amount":
+            widget.destroy()
+            
+      # next three lines display the result using a new label instance
+      result_label = customtkinter.CTkLabel(master=root, fg_color="#191919",
+                                            width=140, height=30, corner_radius=7)
       result_label.place(relx=0.5, rely=0.90, anchor='s')
-      result_label.configure(text=f"{amount} {from_currency} = {result} {to_currency}")
-    else:
-      if not wrong_currency_displayed:
-        wrong_currency = customtkinter.CTkLabel(master=root, text="Enter a valid currency",
-                                                bg_color="#2A2728",fg_color="#a30016", width=120, height=30 ,corner_radius=8)
-        wrong_currency.place(relx=0.15, rely=0.90, anchor='w')
-        wrong_currency_displayed = True
-        try:
-          root.after_cancel(wrong_currency_after_id)
-        except NameError:
-          pass
-        wrong_currency_after_id = root.after(3000, wrong_currency.destroy)
-  else:
-    if not wrong_amount_displayed:
+      result_label.configure(text=f"{amount:.2f} {from_currency} = {result:.2f} {to_currency}")
+    else: # case where a currency is invalid
+      wrong_currency = customtkinter.CTkLabel(master=root, text="Enter a valid currency",
+                                              bg_color="#2A2728", fg_color="#a30016",
+                                              width=120, height=30 ,corner_radius=8)
+      wrong_currency.place(relx=0.15, rely=0.90, anchor='w')
+      root.after(3000, wrong_currency.destroy)
+  else: # case where the amount is invalid
       wrong_amount = customtkinter.CTkLabel(master=root, text='Enter a valid amount',
-                                            bg_color="#2A2728",fg_color="#a30016", width=140, height=30, corner_radius=8)
+                                            bg_color="#2A2728", fg_color="#a30016",
+                                            width=140, height=30, corner_radius=8)
       wrong_amount.place(relx=0.15, rely=0.90, anchor='w')
-      wrong_amount_displayed = True
-      try:
-        root.after_cancel(wrong_amount_after_id)
-      except NameError:
-        pass
-      wrong_amount_after_id = root.after(3000, wrong_amount.destroy)
+      root.after(3000, wrong_amount.destroy)
 
 # create the main window
 root = customtkinter.CTk()
@@ -81,15 +92,16 @@ root.minsize(200,300)
 root.maxsize(200,300)
 
 # create the widgets 
-from_combo = customtkinter.CTkComboBox(master=root, values = currencies)
+from_combo = customtkinter.CTkComboBox(master=root, values = CURRENCIES)
 
 # complete explanation at end of script
-to_combo = customtkinter.CTkComboBox(master=root, values = currencies)
+to_combo = customtkinter.CTkComboBox(master=root, values = CURRENCIES)
 
 # the conversion button (calls the conversion function when clicked)
 from_currency = from_combo.get() 
 print(from_currency)
-entry = customtkinter.CTkEntry(master=root, placeholder_text='   Enter your amount' ,
+entry = customtkinter.CTkEntry(master=root,
+                               placeholder_text='Enter your amount', justify="center",
                                width=140, height=30, corner_radius=8)
 convert_button = customtkinter.CTkButton(master=root, text="Convert", command=convert, 
                                          width=140, height=30, corner_radius=8)

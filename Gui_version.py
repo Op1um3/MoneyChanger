@@ -1,6 +1,3 @@
-"""TODO : Do better comments for the combobox section,
-. Being able to import other curencies and cryptocurencies to exchange. Put a graphic api
-Do a placeholder that react, replace the icon of the window, add polygon"""
 import tkinter
 import customtkinter
 import requests
@@ -17,16 +14,18 @@ def is_number(s: str) -> bool:
   s_no_dot = s.replace(".", "", 1) # this is an integer iff s is a correct number
   return s_no_dot.isdigit()
 
-def delete_labels(window: tkinter.Tk) -> None:
+def delete_labels(window: tkinter.Tk, only_error_messages: bool=False) -> None:
   """
   Remove all labels that are in a window.
   
   Args:
       window: a Tk instance associated with the window in wich the labels are.
+      only_error_messages (bool): if True, will only delete error messages
   """
   for widget in window.winfo_children(): # delete all labels in the window
     if isinstance(widget, customtkinter.CTkLabel):
-      widget.destroy()
+      if not only_error_messages or widget["text"] == "Enter a valid currency" or widget["text"] == "Enter a valid amount":
+        widget.destroy()
       
 def get_exchange_rate(from_currency: str, to_currency: str) -> float:
   """
@@ -44,7 +43,12 @@ def get_exchange_rate(from_currency: str, to_currency: str) -> float:
   return data["conversion_rates"][to_currency]
 def convert():
   """
-  TODO: write docstring for this function
+  This function is called when the convert button is pressed. It handles:
+     - screen cleaning
+     - amount and currency parsing
+     - validity check
+     - currency convertion
+     - result display
   """
   delete_labels(root)
   amount = entry.get()
@@ -54,12 +58,7 @@ def convert():
     if from_currency in CURRENCIES and to_currency in CURRENCIES:
       rate = get_exchange_rate(from_currency, to_currency)
       result = float(amount) * rate
-      
-      # Check if wrong_amount_displayed or wrong_currency_displayed exists and destroy it
-      for widget in root.winfo_children():
-        if widget.cget("text") == "Enter a valid currency" or widget.cget("text") == "Enter a valid amount":
-            widget.destroy()
-            
+      delete_labels(root, True)
       # next three lines display the result using a new label instance
       result_label = customtkinter.CTkLabel(master=root, fg_color="#191919",
                                             width=140, height=30, corner_radius=7)

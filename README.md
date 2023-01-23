@@ -10,6 +10,6 @@ You of course need to have python3 installed.
 # TODO
 - [x] Refactor the code
 - [x] Write a proper readme file
-- [ ] Use a proper API key
-- [ ] Write docstring for the `convert` function
-- [ ] Modify the `delete_labels` function to reuse it for error label handling
+- [x] Use a proper API key
+- [x] Write docstring for the `convert` function
+- [x] Modify the `delete_labels` function to reuse it for error label handling

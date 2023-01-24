@@ -8,4 +8,4 @@ The GUI version requires you to have the libraries `request` and `customtkinter`
 You of course need to have python3 installed.
 
 # TODO
-- [x] Do a .exe functional for everyone
+- [] Do a .exe functional for everyone

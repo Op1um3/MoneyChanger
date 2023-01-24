@@ -1,5 +1,15 @@
 # MoneyChanger
-Just a simple currencies exchange program
-To use the GUI version you will need to install requests and custom tkinter|  
-in terminal : | pip install requests | pip3 install customtkinter |
-and of course have python
+This is a simple currency exchange utilitary program made in Python using [custom tkinter](https://github.com/TomSchimansky/CustomTkinter). <br>
+Feel free to give feedback or suggestions.
+
+# How to run
+The GUI version requires you to have the libraries `request` and `customtkinter` installed. To install using pip, run: <br>
+`pip install requests customtkinter`
+You of course need to have python3 installed.
+
+# TODO
+- [x] Refactor the code
+- [x] Write a proper readme file
+- [x] Use a proper API key
+- [x] Write docstring for the `convert` function
+- [x] Modify the `delete_labels` function to reuse it for error label handling

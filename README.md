@@ -8,8 +8,4 @@ The GUI version requires you to have the libraries `request` and `customtkinter`
 You of course need to have python3 installed.
 
 # TODO
-- [x] Refactor the code
-- [x] Write a proper readme file
-- [x] Use a proper API key
-- [x] Write docstring for the `convert` function
-- [x] Modify the `delete_labels` function to reuse it for error label handling
+- [x] Do a .exe functional for everyone
